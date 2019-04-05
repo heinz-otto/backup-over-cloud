@@ -1,0 +1,21 @@
+defmod Sicherung dummy
+attr Sicherung room Sicherung
+
+defmod FileLog_Sicherung FileLog ./log/Sicherung-%Y.log Sicherung
+attr FileLog_Sicherung logtype text
+attr FileLog_Sicherung room Sicherung
+
+defmod di_ServerShutdown DOIF ([Sicherung:"beendet"] and [?Sicherung:automatic] eq "auto")(set DonixS1 off, setreading Sicherung automatic manu)
+attr di_ServerShutdown do always
+attr di_ServerShutdown room Sicherung
+attr di_ServerShutdown wait 900
+
+defmod di_ServerStart DOIF ([08:00])(setreading Sicherung automatic auto, set DonixS1 on)
+attr di_ServerStart do always
+attr di_ServerStart room Sicherung
+
+defmod n_Sync1 notify Sicherung:gestartet "bash /home/pi/Script1.sh"
+attr n_Sync1 room Sicherung
+
+defmod n_Sync3 notify Sicherung:PSEnde "bash /home/pi/Script3.sh"
+attr n_Sync3 room Sicherung
