@@ -1,3 +1,6 @@
+# need external Scripts
+# .\fhemcl.ps1
+# .\FolderCompare.ps1
 Set-Location $PSScriptRoot
 
 $MagentaFolderLocal = "D:\MagentaCLOUD"
