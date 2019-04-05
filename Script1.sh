@@ -1,4 +1,5 @@
 #!/bin/bash
+# needs fhemcl.sh in the same path
 # Variables
 qpath="/media/m"
 dpath="/media/ds1"
