@@ -1,6 +1,15 @@
-# need external Scripts
-# .\fhemcl.ps1
-# .\FolderCompare.ps1
+<#
+.SYNOPSIS
+    This Script ist the Archiv Server Part for transferring Backup over Cloud
+.DESCRIPTION
+    The Script synchronize two Folders, compares the content with has Tables and move the files to the archiv
+.EXAMPLE
+    FolderSyncAblauf # No Arguments
+.NOTES
+    This Script needs two external Scripts
+    .\fhemcl.ps1
+    .\FolderCompare.ps1
+#>
 Set-Location $PSScriptRoot
 
 $MagentaFolderLocal = "D:\MagentaCLOUD"
