@@ -19,8 +19,8 @@ $Return = .\FolderCompare.ps1 -LeftHashFile ($MagentaFolderLocal + "\Scripts\Lef
 
 if ($Return -ne "nothing") {
     $SicherungStat = get-childitem -r $SourceFolder | Measure-Object -Property length -sum 
-    .\fhemcl.ps1 $fhemurl "setreading Sicherung lastTransferCount $SicherungStat.count"
-    .\fhemcl.ps1 $fhemurl "setreading Sicherung lastTransferSizeB $SicherungStat.sum"
+    .\fhemcl.ps1 $fhemurl $("setreading Sicherung lastTransferCount " + $SicherungStat.count)
+    .\fhemcl.ps1 $fhemurl $("setreading Sicherung lastTransferSizeB " + $SicherungStat.sum)
     }
 
 if ($Return -eq 0) {
