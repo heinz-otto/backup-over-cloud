@@ -16,12 +16,15 @@ $MagentaFolderLocal = "D:\MagentaCLOUD"
 $SourceFolder = $MagentaFolderLocal + "\Sicherung"
 $DestFolder = "S:\SicherungNeu"
 $fhemurl = "http://192.168.100.119:8083"
+$OrgFolder = "Z:\Sicherung"
+$OrgDrive = "Z:"
 
 # Set Status Server started
 .\fhemcl.ps1 $fhemurl "set Sicherung gestartet"
 
 # Wait that the linux station has synced the drives 
-while(!$(.\fhemcl.ps1 $fhemurl "list Sicherung state").Item(1).contains("SyncEnde")) {sleep (5)}
+# while(!$(.\fhemcl.ps1 $fhemurl "list Sicherung state").Item(1).contains("SyncEnde")) {sleep (5)}
+while(!$(.\fhemcl.ps1 $fhemurl "list Sicherung state").contains("SyncEnde")) {sleep (5)}
 
 # compare Files with on behalf of also transfered hashes
 $Return = .\FolderCompare.ps1 -LeftHashFile ($MagentaFolderLocal + "\Scripts\LeftsideHash*.txt") -RightDir ($MagentaFolderLocal + "\Sicherung")
@@ -40,7 +43,7 @@ if ($Return -eq 0) {
     
     # Create Directorys if not exist
     $FilesSicherung | where {$_.attributes -match "Directory"}| %{
-        $newdir = $_.fullname.Replace("Z:\Sicherung",$DestFolder)
+        $newdir = $_.fullname.Replace($OrgFolder,$DestFolder)
         If (-not (Test-Path $newdir)) { 
         write-verbose "Erzeuge Pfad $newdir"
         md $newdir 
@@ -48,8 +51,8 @@ if ($Return -eq 0) {
       }
     
     # Move only Items that provided inside the xml Files
-    $FilesSicherung | where {$_.attributes -notmatch "Directory"} |% {move-item $_.Fullname.Replace("Z:\Sicherung",$Sourcefolder) $_.Fullname.Replace("Z:\Sicherung",$Destfolder)} 
-    $FilesHash | % {$_.Fullname.Replace("Z:",$MagentaFolderLocal)}|Remove-Item 
+    $FilesSicherung | where {$_.attributes -notmatch "Directory"} |% {move-item $_.Fullname.Replace($OrgFolder,$Sourcefolder) $_.Fullname.Replace($OrgFolder,$Destfolder)} 
+    $FilesHash | % {$_.Fullname.Replace($OrgDrive,$MagentaFolderLocal)}|Remove-Item 
 
     }
     
