@@ -17,7 +17,6 @@ $SourceFolder = $MagentaFolderLocal + "\Sicherung"
 $DestFolder = "S:\SicherungNeu"
 $fhemurl = "http://192.168.100.119:8083"
 $OrgFolder = "Z:\Sicherung"
-$OrgDrive = "Z:"
 
 # Set Status Server started
 .\fhemcl.ps1 $fhemurl "set Sicherung gestartet"
@@ -52,7 +51,8 @@ if ($Return -eq 0) {
     
     # Move only Items that provided inside the xml Files
     $FilesSicherung | where {$_.attributes -notmatch "Directory"} |% {move-item $_.Fullname.Replace($OrgFolder,$Sourcefolder) $_.Fullname.Replace($OrgFolder,$Destfolder)} 
-    $FilesHash | % {$_.Fullname.Replace($OrgDrive,$MagentaFolderLocal)}|Remove-Item 
+    # Use the Original DirectoryName inside from the XML File
+    $FilesHash | % {$_.Fullname.Replace($_.DirectoryName,$MagentaFolderLocal+"\Scripts")}|Remove-Item 
 
     }
     
