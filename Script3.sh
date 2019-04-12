@@ -10,7 +10,7 @@ sdir=$(dirname $(realpath "$0"))
 # sync, umount and trigger
 # S* will copy all files and folders with S, folders will be created in $dpath if not exist
 # use more rsync lines for different folders
-rsync -a --delete "${qpath}/S*" "${dpath}"
+rsync -a --delete ${qpath}/S* ${dpath}
 umount $qpath
 umount $dpath
 # set Status in FHEM
