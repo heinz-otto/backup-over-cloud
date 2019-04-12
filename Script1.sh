@@ -1,4 +1,5 @@
 #!/bin/bash
+# this script sync the cloud content to the archive server
 # needs fhemcl.sh in the same path
 # Variables, fill in the right Pathnames
 qpath="/media/m"
