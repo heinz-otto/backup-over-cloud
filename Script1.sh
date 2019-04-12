@@ -1,6 +1,6 @@
 #!/bin/bash
 # needs fhemcl.sh in the same path
-# Variables, fill in teh right Pathnames
+# Variables, fill in the right Pathnames
 qpath="/media/m"
 dpath="/media/ds1"
 # detect the path from this script
