@@ -1,12 +1,15 @@
 #!/bin/bash
 # needs fhemcl.sh in the same path
-# Variables
+# Variables, fill in teh right Pathnames
 qpath="/media/m"
 dpath="/media/ds1"
-sdir=$(dirname $(realpath $0))
+# detect the path from this script
+sdir=$(dirname $(realpath $0)) 
 # mount, sync and trigger
 mount $qpath
 mount $dpath
-rsync -a --delete "${qpath}/Sicherung/" "${dpath}/Sicherung/"
-rsync -a --delete "${qpath}/Scripts/" "${dpath}/Scripts/"
+# S* will copy all files and folders with S, folders will be created in $dpath if not exist
+# use more rsync lines for different folders
+rsync -a --delete "${qpath}/S*" "${dpath}"
+# set Status in FHEM
 bash "${sdir}/fhemcl.sh" 8083 "set Sicherung SyncEnde" > /dev/null 2>&1
