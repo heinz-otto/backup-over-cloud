@@ -1,8 +1,8 @@
 #!/bin/bash
 # needs fhemcl.sh in the same path
-# Variables
-qpath="/media/zadonixs1"
-dpath="/media/magenta"
+# Variables, fill in the right foldernames
+qpath="/media/ds1"
+dpath="/media/m"
 sdir=$(dirname $(realpath "$0"))
 # mount, sync and trigger
 mount $qpath
