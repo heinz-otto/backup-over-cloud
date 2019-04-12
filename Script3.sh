@@ -6,7 +6,7 @@
 qpath="/media/ds1"
 dpath="/media/m"
 # detect the path from this script
-sdir=$(dirname $(realpath $0))
+sdir=$(dirname $(realpath "$0"))
 # sync, umount and trigger
 # S* will copy all files and folders with S, folders will be created in $dpath if not exist
 # use more rsync lines for different folders
