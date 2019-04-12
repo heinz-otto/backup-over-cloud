@@ -3,7 +3,7 @@
 # Variables
 qpath="/media/zadonixs1"
 dpath="/media/magenta"
-sdir=$(dirname "$(realpath "$0")")
+sdir=$(dirname $(realpath "$0"))
 # mount, sync and trigger
 mount $qpath
 mount $dpath
