@@ -5,12 +5,12 @@
 qpath="/media/m"
 dpath="/media/ds1"
 # detect the path from this script
-sdir=$(dirname $(realpath $0)) 
+sdir=$(dirname $(realpath "$0")) 
 # mount, sync and trigger
 mount $qpath
 mount $dpath
 # S* will copy all files and folders with S, folders will be created in $dpath if not exist
 # use more rsync lines for different folders
-rsync -a --delete "${qpath}/S*" "${dpath}"
+rsync -a --delete ${qpath}/S* ${dpath}
 # set Status in FHEM
 bash "${sdir}/fhemcl.sh" 8083 "set Sicherung SyncEnde" > /dev/null 2>&1
