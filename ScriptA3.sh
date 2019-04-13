@@ -2,9 +2,9 @@
 # this script will sync the changes back to the cloud, 
 # normally it will delete files wich are moved and deleted inside the powershell script
 # needs fhemcl.sh in the same path
-# Variables, fill in the right Pathnames
-qpath="/media/ds1"
-dpath="/media/m"
+# read foldernames from Arguments
+qpath=$1
+dpath=$2
 # detect the path from this script
 sdir=$(dirname $(realpath "$0"))
 # sync, umount and trigger
