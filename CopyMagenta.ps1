@@ -2,11 +2,11 @@
 .SYNOPSIS
     This Script copy Files from today to a folder wich is later syncronized the Cloud Transfer path
 .DESCRIPTION
-    The Script copy the Files from today, build hash Files for the copy over the Cloud process
+    copy the Files from today, build hash Files for the copy over the Cloud process and logs to the FHEM Server
 .EXAMPLE
-    CopyMagenta # No Arguments
+    CopyMagenta -fhemurl http://s1:8083 -sourcepath d:\Transfer -destination d:\Magenta
 .NOTES
-    This Script needs two external Scripts
+    This Script needs external Scripts
     .\fhemcl.ps1
 #>
 #region Params
