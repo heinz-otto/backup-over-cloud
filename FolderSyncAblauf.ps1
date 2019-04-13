@@ -16,7 +16,7 @@ $MagentaFolderLocal = "D:\MagentaCLOUD"
 $SourceFolder = $MagentaFolderLocal + "\Sicherung"
 $DestFolder = "S:\SicherungNeu"
 $fhemurl = "http://192.168.100.119:8083"
-$OrgFolder = "Z:\Sicherung"
+#$OrgFolder = "Z:\Sicherung"
 
 # Set Status Server started
 .\fhemcl.ps1 $fhemurl "set Sicherung gestartet"
@@ -39,6 +39,8 @@ if ($Return -eq 0) {
     write-verbose "$SicherungStat.count Dateien geprüft"
     $FilesSicherung = Import-Clixml ($MagentaFolderLocal + "\Scripts\Sicherung.xml")
     $FilesHash = Import-Clixml ($MagentaFolderLocal + "\Scripts\Hashfiles.xml")
+    $OrgDestination = Import-Clixml ($MagentaFolderLocal + "\Scripts\destination.xml")
+    $OrgFolder = $OrgDestination.FullName
     
     # Create Directorys if not exist
     $FilesSicherung | where {$_.attributes -match "Directory"}| %{
