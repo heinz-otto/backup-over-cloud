@@ -1,0 +1,10 @@
+defmod Sicherung dummy
+attr Sicherung devStateIcon beendet:message_ok@green bereit:system_backup@orange _on:system_backup@red ServerBackup:system_backup@blue
+attr Sicherung room Sicherung
+
+defmod FileLog_Sicherung FileLog ./log/Sicherung-%Y.log Sicherung
+attr FileLog_Sicherung logtype text
+attr FileLog_Sicherung room Sicherung
+
+defmod n_CopyMagenta notify Sicherung:ServerBackup  "bash /home/pi/ScriptQ1.sh /media/zadonixs1 /media/magenta"
+attr n_CopyMagenta room Sicherung
