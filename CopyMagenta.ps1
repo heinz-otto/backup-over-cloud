@@ -25,7 +25,8 @@ Set-Location $PSScriptRoot
 
 $FileHash = "LeftSideHash$(get-date -format "yyyyMMdd-HHmmss").txt"
 
-if ($fhemurl -ne "leer") {.\fhemcl.ps1 $fhemurl "set Sicherung Copy_2_$destination"} else {Write-Verbose "set Sicherung Copy_2_$destination"}
+if ($fhemurl -ne "leer") {.\fhemcl.ps1 $fhemurl "set Sicherung Copy_2_$destination"}
+Write-Verbose "Copy 2 $destination"
 $path=$destination + "\Scripts"
 If (-not (test-path $path)) {New-Item -Path $path -ItemType Directory| Out-Null} 
 $path=$destination + "\Sicherung"
@@ -36,7 +37,8 @@ If (-not (test-path $path)) {New-Item -Path $path -ItemType Directory| Out-Null}
 $sourcefiles = gci $sourcepath -File -Recurse |where {(get-date $_.CreationTime -f "dd/MM/yy") -eq (get-date -f "dd/MM/yy")}
 $LeftSideHash = $sourcefiles | Get-FileHash | select @{Label="Path";Expression={$_.Path.Replace($sourcepath,"")}},Hash 
 $LeftSideHash |Export-Clixml $destination\Scripts\$FileHash
-if ($fhemurl -ne "leer") {.\fhemcl.ps1 $fhemurl "set Sicherung Hashfile_erzeugt"}else {Write-Verbose "set Sicherung Hashfile_erzeugt"}
+if ($fhemurl -ne "leer") {.\fhemcl.ps1 $fhemurl "set Sicherung Hashfile_erzeugt"}
+Write-Verbose "Hashfile_erzeugt"
 
 # Dateien kopieren, da einzelne Files kopiert werden ist das mit den Pfaden etwas aufwendiger
 foreach ($file in $sourcefiles)
@@ -44,16 +46,18 @@ foreach ($file in $sourcefiles)
     $newdir = $file.DirectoryName.Replace( $sourcepath, $($destination + "\Sicherung") )
     If (-not (test-path $newdir)) { md $newdir| Out-Null}
     Copy-Item -Path $file.FullName -Destination $newdir
-    if ($fhemurl -ne "leer") {.\fhemcl.ps1 $fhemurl $("set Sicherung " + $file.fullname)}else {Write-Verbose $("set Sicherung " + $file.fullname)}
+    $cmd1 = $("set Sicherung " + $file.fullname)
+    if ($fhemurl -ne "leer") {.\fhemcl.ps1 $fhemurl $cmd1}
+    Write-Verbose $("copy " + $file.fullname)
 }
 
 #Exportiere FileCollection nach XML
-    
 gci $destination\Scripts\LeftSideHash*.txt | Export-Clixml $destination\Scripts\Hashfiles.xml
 gci $destination\Sicherung -r | Export-Clixml $destination\Scripts\Sicherung.xml
 
 $SicherungStat = gci $destination\Sicherung -r | measure-object -Property length -sum
-
-if ($fhemurl -ne "leer") {.\fhemcl.ps1 $fhemurl $("setreading Sicherung lastTransferCount " + $SicherungStat.count)}else {Write-Verbose $("setreading Sicherung lastTransferCount " + $SicherungStat.count)}
-if ($fhemurl -ne "leer") {.\fhemcl.ps1 $fhemurl $("setreading Sicherung lastTransferSizeB " + $SicherungStat.sum)}else {Write-Verbose $("setreading Sicherung lastTransferSizeB " + $SicherungStat.sum)}
+$cmd1 = $("setreading Sicherung lastTransferCount " + $SicherungStat.count)
+$cmd2 = $("setreading Sicherung lastTransferSizeB " + $SicherungStat.sum)
+if ($fhemurl -ne "leer") {.\fhemcl.ps1 $fhemurl $cmd1 $cmd2}
+Write-Verbose $("lastTransferCount " + $SicherungStat.count) $(lastTransferSizeB " + $SicherungStat.sum)
  
