@@ -52,6 +52,7 @@ foreach ($file in $sourcefiles)
 #Exportiere FileCollection nach XML
 gci $destination\Scripts\LeftSideHash*.txt | Export-Clixml $destination\Scripts\Hashfiles.xml
 gci $destination\Sicherung -r | Export-Clixml $destination\Scripts\Sicherung.xml
+get-item $destination | Export-Clixml $destination\Scripts\destination.xml
 
 $SicherungStat = gci $destination\Sicherung -r | measure-object -Property length -sum
 $cmd1 = $("setreading Sicherung lastTransferCount " + $SicherungStat.count)
