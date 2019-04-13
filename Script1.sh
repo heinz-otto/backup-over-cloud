@@ -1,9 +1,9 @@
 #!/bin/bash
 # this script sync the cloud content to the archive server
 # needs fhemcl.sh in the same path
-# Variables, fill in the right Pathnames
-qpath="/media/m"
-dpath="/media/ds1"
+# Read the foldernames from Arguments
+qpath=$1
+dpath=$2 
 # detect the path from this script
 sdir=$(dirname $(realpath "$0")) 
 # mount, sync and trigger
