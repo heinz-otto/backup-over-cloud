@@ -12,10 +12,10 @@ attr di_ServerShutdown wait 900
 
 defmod di_ServerStart DOIF ([08:00])(setreading Sicherung automatic auto, set DonixS1 on)
 attr di_ServerStart do always
-attr di_ServerStart room Sicherung
+attr di_ServerStart room Sicherung,Wohnzimmer
 
-defmod n_Sync1 notify Sicherung:gestartet "bash /home/pi/Script1.sh"
+defmod n_Sync1 notify Sicherung:gestartet "bash /home/pi/ScriptA1.sh /media/magenta /media/donixs1"
 attr n_Sync1 room Sicherung
 
-defmod n_Sync3 notify Sicherung:PSEnde "bash /home/pi/Script3.sh"
+defmod n_Sync3 notify Sicherung:PSEnde "bash /home/pi/ScriptA3.sh /media/donixs1 /media/magenta"
 attr n_Sync3 room Sicherung
