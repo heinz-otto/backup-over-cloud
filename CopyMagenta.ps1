@@ -12,10 +12,10 @@
 #>
 #region Params
 param(
-[Parameter(Mandatory = $false, ValueFromPipeline = $true)]
-[string]$fhemurl,
-[string]$sourcepath,
-[string]$destination
+[Parameter(Mandatory = $true)]
+[ValidateScript({$uri = $_ -as [System.URI];$uri.AbsoluteURI -ne $null -and $uri.Scheme -match '[http|https]'})]$fhemurl,
+[Parameter(Mandatory = $true)][ValidateScript({Test-Path $_ -PathType ‘Container’})]$sourcepath,
+[Parameter(Mandatory = $true)][ValidateScript({Test-Path $_ -PathType ‘Container’})]$destination
 )
 #endregion 
 Set-Location $PSScriptRoot
