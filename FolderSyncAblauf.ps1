@@ -4,6 +4,7 @@
 .DESCRIPTION
     The Script start synchronizing Folder from Cloud externally, compares than the content of  Folders with Hash Tables and move the files to the archiv
 .EXAMPLE
+    FolderSyncAblauf -fhemurl "http://s1:8083" -MagentaFolderLocal "D:\Magenta" -DestFolder "D:\Test\SicherungNeu"
     FolderSyncAblauf -fhemurl "http://s1:8083" -MagentaFolderLocal "D:\Magenta" -DestFolder "D:\Test\SicherungNeu" -verbose
 .NOTES
     This Script needs two external Scripts
@@ -12,27 +13,24 @@
 #>
 #region Params
 param(
-[Parameter(Mandatory = $false, ValueFromPipeline = $true)]
-[string]$fhemurl,
-[string]$MagentaFolderLocal,
-[string]$DestFolder
+[Parameter(Mandatory = $true)]
+[ValidateScript({$uri = $_ -as [System.URI];$uri.AbsoluteURI -ne $null -and $uri.Scheme -match '[http|https]'})]$fhemurl,
+[Parameter(Mandatory = $true)][ValidateScript({Test-Path $_ -PathType Container})][string]$MagentaFolderLocal,
+[Parameter(Mandatory = $true)][ValidateScript({Test-Path $_ -PathType Container})][string]$DestFolder
 )
 #endregion 
 
 Set-Location $PSScriptRoot
 $verbose = $PSCmdlet.MyInvocation.BoundParameters["Verbose"] 
+if (!$verbose) {if (!(Test-Path .\fhemcl.ps1)) {Write-Output "fhemcl.ps1 fehlt"};exit}
+if (!$verbose) {if (!(Test-Path .\FolderCompare.ps1)) {Write-Output "FolderCompare.ps1 fehlt"};exit}
 
-#$fhemurl = "http://192.168.100.119:8083"
-#$MagentaFolderLocal = "D:\MagentaCLOUD"
-#$DestFolder = "S:\SicherungNeu"
-#$OrgFolder = "Z:\Sicherung"
 $SourceFolder = $MagentaFolderLocal + "\Sicherung"
 
 # Set Status Server started
 if (!$verbose) {.\fhemcl.ps1 $fhemurl "set Sicherung gestartet"}
 
 # Wait that the linux station has synced the drives, verbose -> no wait 
-# while(!$(.\fhemcl.ps1 $fhemurl "list Sicherung state").Item(1).contains("SyncEnde")) {sleep (5)}
 if (!$verbose) {while(!$(.\fhemcl.ps1 $fhemurl "list Sicherung state").contains("SyncEnde")) {sleep (5)}}
 
 # compare Files with on behalf of also transfered hashes
@@ -49,23 +47,7 @@ if ($Return -eq 0) {
     if (!$verbose) {.\fhemcl.ps1 $fhemurl "set Sicherung geprueft"}
     write-verbose "Sicherung geprueft"
 
-    #$OrgDestination = Import-Clixml ($MagentaFolderLocal + "\Scripts\destination.xml")
-    #$OrgFolder = $OrgDestination.FullName
-    
-   
-    # Create Directorys if not exist
-    #$FilesSicherung = Import-Clixml ($MagentaFolderLocal + "\Scripts\Sicherung.xml")
-    #$FilesSicherung | where {$_.attributes -match "Directory"}| %{
-    #    $newdir = $_.fullname.Replace($OrgFolder,$DestFolder)
-    #    If (-not (Test-Path $newdir)) { 
-    #    write-verbose "Erzeuge Pfad $newdir"
-    #    md $newdir 
-    #    }
-    #  }
-    
     # Move only Items that provided inside the xml Files
-    #$FilesSicherung | where {$_.attributes -notmatch "Directory"} |% {move-item $_.Fullname.Replace($OrgFolder,$Sourcefolder) $_.Fullname.Replace($OrgFolder,$Destfolder)} 
- 
     $FilesRel = Import-Clixml ($MagentaFolderLocal + "\Scripts\FilenamesRel.xml")
     $FilesRel | %{New-Item -ItemType File -path $($Destfolder + $_) -Force}|Out-Null
     $FilesRel | %{move-item -path $($Sourcefolder + $_) -destination $($Destfolder + $_) -force}
