@@ -56,8 +56,10 @@ foreach ($file in $sourcefiles)
 }
 
 #Exportiere FileCollection nach XML
+####### scheinbar obsolete, Sicherung wird nicht verwendet Hasfiles am Ziel nur gelöscht.
 gci $destination\Scripts\LeftSideHash*.txt | Export-Clixml $destination\Scripts\Hashfiles.xml
 gci $destination\Sicherung -r | Export-Clixml $destination\Scripts\Sicherung.xml
+#######
 gci $destination\Sicherung -r | where {$_.attributes -notmatch "Directory"} |%{$_.FullName.Replace($($destination + "\Sicherung"),"")}|Export-Clixml $destination\Scripts\FilenamesRel.xml
 
 $SicherungStat = gci $destination\Sicherung -r | measure-object -Property length -sum
