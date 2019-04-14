@@ -5,6 +5,7 @@
     copy the Files from today, build hash Files for the copy over the Cloud process and logs to the FHEM Server
 .EXAMPLE
     CopyMagenta -fhemurl "http://s1:8083" -sourcepath "d:\Transfer" -destination "d:\Magenta"
+    CopyMagenta -fhemurl "http://s1:8083" -sourcepath "d:\Transfer" -destination "d:\Magenta" -date 11.04.19
     CopyMagenta -fhemurl "http://s1:8083" -sourcepath "d:\Transfer" -destination "d:\Magenta" -verbose
 .NOTES
     This Script needs external Scripts
@@ -15,7 +16,8 @@ param(
 [Parameter(Mandatory = $true)]
 [ValidateScript({$uri = $_ -as [System.URI];$uri.AbsoluteURI -ne $null -and $uri.Scheme -match '[http|https]'})]$fhemurl,
 [Parameter(Mandatory = $true)][ValidateScript({Test-Path $_ -PathType Container})]$sourcepath,
-[Parameter(Mandatory = $true)][ValidateScript({Test-Path $_ -PathType Container})]$destination
+[Parameter(Mandatory = $true)][ValidateScript({Test-Path $_ -PathType Container})]$destination,
+[ValidatePattern("^(0[1-9]|[12]\d|3[01]).(0[1-9]|1[0-2]).(\d{2})$")][string]$date = (get-date -f "dd/MM/yy")
 )
 #endregion 
 Set-Location $PSScriptRoot
@@ -35,10 +37,8 @@ If (-not (test-path $path)) {New-Item -Path $path -ItemType Directory| Out-Null}
 # temp export Variable 
 get-item $path | Export-Clixml $destination\Scripts\destination.xml
 
-# get only files from a certain date
-# $sourcefiles = gci $sourcepath -File -Recurse |where {(get-date $_.CreationTime -f "dd/MM/yy") -eq "11.04.19"}
-# get only files from today
-$sourcefiles = gci $sourcepath -File -Recurse |where {(get-date $_.CreationTime -f "dd/MM/yy") -eq (get-date -f "dd/MM/yy")}
+# get only files from a certain date, if not today use the parameter -date
+$sourcefiles = gci $sourcepath -File -Recurse |where {(get-date $_.CreationTime -f "dd/MM/yy") -eq $date}
 $LeftSideHash = $sourcefiles | Get-FileHash | select @{Label="Path";Expression={$_.Path.Replace($sourcepath,"")}},Hash 
 $LeftSideHash |Export-Clixml $destination\Scripts\$FileHash
 if (!$verbose) {.\fhemcl.ps1 $fhemurl "set Sicherung Hashfile_erzeugt"}
