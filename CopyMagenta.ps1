@@ -14,12 +14,13 @@
 param(
 [Parameter(Mandatory = $true)]
 [ValidateScript({$uri = $_ -as [System.URI];$uri.AbsoluteURI -ne $null -and $uri.Scheme -match '[http|https]'})]$fhemurl,
-[Parameter(Mandatory = $true)][ValidateScript({Test-Path $_ -PathType ‘Container’})]$sourcepath,
-[Parameter(Mandatory = $true)][ValidateScript({Test-Path $_ -PathType ‘Container’})]$destination
+[Parameter(Mandatory = $true)][ValidateScript({Test-Path $_ -PathType Container})]$sourcepath,
+[Parameter(Mandatory = $true)][ValidateScript({Test-Path $_ -PathType Container})]$destination
 )
 #endregion 
 Set-Location $PSScriptRoot
 $verbose = $PSCmdlet.MyInvocation.BoundParameters["Verbose"] 
+if (!$verbose) {if (!(Test-Path .\fhemcl.ps1)) {Write-Output "fhemcl.ps1 fehlt"};exit}
 Write-Verbose "$sourcepath $destination"
 
 $FileHash = "LeftSideHash$(get-date -format "yyyyMMdd-HHmmss").txt"
