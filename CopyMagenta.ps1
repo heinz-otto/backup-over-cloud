@@ -4,7 +4,8 @@
 .DESCRIPTION
     copy the Files from today, build hash Files for the copy over the Cloud process and logs to the FHEM Server
 .EXAMPLE
-    CopyMagenta -fhemurl http://s1:8083 -sourcepath d:\Transfer -destination d:\Magenta
+    CopyMagenta -fhemurl "http://s1:8083" -sourcepath "d:\Transfer" -destination "d:\Magenta"
+    CopyMagenta -fhemurl "http://s1:8083" -sourcepath "d:\Transfer" -destination "d:\Magenta" -verbose
 .NOTES
     This Script needs external Scripts
     .\fhemcl.ps1
@@ -30,8 +31,12 @@ If (-not (test-path $path)) {New-Item -Path $path -ItemType Directory| Out-Null}
 $path=$destination + "\Sicherung"
 If (-not (test-path $path)) {New-Item -Path $path -ItemType Directory| Out-Null}
 
+# temp export Variable 
+get-item $path | Export-Clixml $destination\Scripts\destination.xml
+
 # get only files from a certain date
 # $sourcefiles = gci $sourcepath -File -Recurse |where {(get-date $_.CreationTime -f "dd/MM/yy") -eq "11.04.19"}
+# get only files from today
 $sourcefiles = gci $sourcepath -File -Recurse |where {(get-date $_.CreationTime -f "dd/MM/yy") -eq (get-date -f "dd/MM/yy")}
 $LeftSideHash = $sourcefiles | Get-FileHash | select @{Label="Path";Expression={$_.Path.Replace($sourcepath,"")}},Hash 
 $LeftSideHash |Export-Clixml $destination\Scripts\$FileHash
@@ -52,7 +57,7 @@ foreach ($file in $sourcefiles)
 #Exportiere FileCollection nach XML
 gci $destination\Scripts\LeftSideHash*.txt | Export-Clixml $destination\Scripts\Hashfiles.xml
 gci $destination\Sicherung -r | Export-Clixml $destination\Scripts\Sicherung.xml
-get-item $destination | Export-Clixml $destination\Scripts\destination.xml
+gci $destination\Sicherung -r | where {$_.attributes -notmatch "Directory"} |%{$_.FullName.Replace($($destination + "\Sicherung"),"")}|Export-Clixml $destination\Scripts\FilenamesRel.xml
 
 $SicherungStat = gci $destination\Sicherung -r | measure-object -Property length -sum
 $cmd1 = $("setreading Sicherung lastTransferCount " + $SicherungStat.count)
