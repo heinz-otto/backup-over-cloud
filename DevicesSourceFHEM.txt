@@ -6,5 +6,5 @@ defmod FileLog_Sicherung FileLog ./log/Sicherung-%Y.log Sicherung
 attr FileLog_Sicherung logtype text
 attr FileLog_Sicherung room Sicherung
 
-defmod n_CopyMagenta notify Sicherung:ServerBackup  "bash /home/pi/ScriptQ1.sh /media/zadonixs1 /media/magenta"
+defmod n_CopyMagenta notify Sicherung:ServerBackup  "bash /home/pi/ScriptS1.sh /media/zadonixs1 /media/magenta"
 attr n_CopyMagenta room Sicherung
