@@ -17,13 +17,14 @@ fi
 # mount, sync and trigger
 mount "$qpath"
 mount "$dpath"
-# if rsync ist ok then remove the synced files at source
+# if rsync ist ok then remove the synced files at source, set status in fhem
 if ! rsync -rut --inplace "${qpath}/S*" "${dpath}"
 then
    rm -r "${qpath}/S*"
+   bash fhemcl.sh 8083 "set Sicherung CopyMagentaEnde"
+else
+   bash fhemcl.sh 8083 "set Sicherung ERROR_S1"
 fi
-# cp -pRu "${qpath}/S*" "${dpath}"
-bash fhemcl.sh 8083 "set Sicherung CopyMagentaEnde"
 umount "$qpath"
 umount "$dpath" 
 } >> $LOG 2>&1
