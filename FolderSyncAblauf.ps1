@@ -52,13 +52,8 @@ if ($Return -eq 0) {
     $FilesRel | %{New-Item -ItemType File -path $($Destfolder + $_) -Force}|Out-Null
     $FilesRel | %{move-item -path $($Sourcefolder + $_) -destination $($Destfolder + $_) -force}
     
-    # Use the Original DirectoryName inside from the XML File
-    ###### Obsolete
-    $FilesHash = Import-Clixml ($MagentaFolderLocal + "\Scripts\Hashfiles.xml")
-    $FilesHash | % {$_.Fullname.Replace($_.DirectoryName,$MagentaFolderLocal+"\Scripts")}|Remove-Item 
-    ###### 
-    # Vorschlag
-    # Remove-Item $($MagentaFolderLocal + "\Scripts\LeftsideHash*.txt")
+    # Cleanup XML File
+    Remove-Item $($MagentaFolderLocal + "\Scripts\LeftsideHash*.txt")
    }
     
 # Set final Status
