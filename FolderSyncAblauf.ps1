@@ -54,6 +54,7 @@ if ($Return -eq 0) {
     
     # Cleanup XML File
     Remove-Item $($MagentaFolderLocal + "\Scripts\LeftsideHash*.txt")
+    Remove-Item $($MagentaFolderLocal + "\Scripts\FilenamesRel.xml")
    }
     
 # Set final Status
