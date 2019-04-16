@@ -1,5 +1,6 @@
 #!/bin/bash
-# needs fhemcl.sh in the same path
+# This Script will being copy folders from a local Server to a Cloud Drive
+# if success, the folders will be removed from the source
 # read Foldernames from Arguments
 qpath=$1
 dpath=$2
