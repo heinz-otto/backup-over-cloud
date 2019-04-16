@@ -1,5 +1,5 @@
 # backup-over-cloud
-Transport a backup in daily pieces over a cloud drive to a second location
+Transport a daily backup pieces over a cloud drive to a second location. The Files should be well prepared: zipped and encrypted! In my Environment, backup program will be the files provided in a Folder named d:\Magenta\Sicherung in the source location. The files will be transported to the archive location in the Folder D:\Sicherung. The Files will be "moved" over the cloud: After a working day, the backup ist done and the files will be copied to the cloud. Next morning, the files will be archived and online deleted. 
 
 Location S(ource)
 
