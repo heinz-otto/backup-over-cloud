@@ -34,9 +34,6 @@ If (-not (test-path $path)) {New-Item -Path $path -ItemType Directory| Out-Null}
 $path=$destination + "\Sicherung"
 If (-not (test-path $path)) {New-Item -Path $path -ItemType Directory| Out-Null}
 
-# temp export Variable 
-get-item $path | Export-Clixml $destination\Scripts\destination.xml
-
 # get only files from a certain date, if not today use the parameter -date
 $sourcefiles = gci $sourcepath -File -Recurse |where {(get-date $_.CreationTime -f "dd/MM/yy") -eq $date}
 $LeftSideHash = $sourcefiles | Get-FileHash | select @{Label="Path";Expression={$_.Path.Replace($sourcepath,"")}},Hash 
@@ -55,11 +52,7 @@ foreach ($file in $sourcefiles)
     Write-Verbose $("copy " + $file.fullname)
 }
 
-#Exportiere FileCollection nach XML
-####### scheinbar obsolete, Sicherung wird nicht verwendet Hasfiles am Ziel nur gelöscht.
-gci $destination\Scripts\LeftSideHash*.txt | Export-Clixml $destination\Scripts\Hashfiles.xml
-gci $destination\Sicherung -r | Export-Clixml $destination\Scripts\Sicherung.xml
-#######
+#Export relative Filenames to XML
 gci $destination\Sicherung -r | where {$_.attributes -notmatch "Directory"} |%{$_.FullName.Replace($($destination + "\Sicherung"),"")}|Export-Clixml $destination\Scripts\FilenamesRel.xml
 
 $SicherungStat = gci $destination\Sicherung -r | measure-object -Property length -sum
@@ -67,4 +60,3 @@ $cmd1 = $("setreading Sicherung lastTransferCount " + $SicherungStat.count)
 $cmd2 = $("setreading Sicherung lastTransferSizeB " + $SicherungStat.sum)
 if (!$verbose) {.\fhemcl.ps1 $fhemurl $cmd1 $cmd2}
 Write-Verbose "$("lastTransferCount " + $SicherungStat.count) $("lastTransferSizeB " + $SicherungStat.sum)"
- 
