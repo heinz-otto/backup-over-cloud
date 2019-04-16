@@ -22,6 +22,6 @@ if [ $? -eq 0 ]; then
    rm -r ${qpath}/S* >> $LOG 2>&1
 fi
 # cp -pRu "${qpath}/S*" "${dpath}"
-bash "fhemcl.sh" 8083 "set Sicherung CopyMagentaEnde" >> $LOG 2>&1
+bash fhemcl.sh 8083 "set Sicherung CopyMagentaEnde" >> $LOG 2>&1
 umount $qpath >> $LOG 2>&1
 umount $dpath >> $LOG 2>&1
