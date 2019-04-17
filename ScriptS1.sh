@@ -4,8 +4,7 @@
 # read Foldernames from Arguments
 qpath=$1
 dpath=$2
-#LOG=$0.log
-LOG=/opt/fhem/ScriptS1.log
+LOG=$0.log
 # check if fhemcl exists
 file=fhemcl.sh
 {
@@ -19,7 +18,7 @@ fi
 mount "$qpath"
 mount "$dpath"
 # if rsync ist ok then remove the synced files at source, set status in fhem
-if ! rsync -rut --inplace "${qpath}/S*" "${dpath}"
+if rsync -rut --inplace ${qpath}/S* ${dpath}
 then
    rm -r "${qpath}/S*"
    bash fhemcl.sh 8083 "set Sicherung CopyMagentaEnde"
