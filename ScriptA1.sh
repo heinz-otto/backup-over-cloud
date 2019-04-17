@@ -20,7 +20,7 @@ mount "$dpath"
 # S* will copy all files and folders with S, folders will be created in $dpath if not exist
 # set Status in FHEM
 # use more rsync lines for different folders 
-if rsync -a --delete "${qpath}/S*" "${dpath}"
+if rsync -a --delete ${qpath}/S* ${dpath}
 then
    bash fhemcl.sh 8083 "set Sicherung SyncEnde"
 else
