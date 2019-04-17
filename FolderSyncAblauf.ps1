@@ -22,8 +22,8 @@ param(
 
 Set-Location $PSScriptRoot
 $verbose = $PSCmdlet.MyInvocation.BoundParameters["Verbose"] 
-if (!$verbose) {if (!(Test-Path .\fhemcl.ps1)) {Write-Output "fhemcl.ps1 fehlt"};exit}
-if (!$verbose) {if (!(Test-Path .\FolderCompare.ps1)) {Write-Output "FolderCompare.ps1 fehlt"};exit}
+if (!$verbose) {if (!(Test-Path .\fhemcl.ps1)) {Write-Output "fhemcl.ps1 fehlt";exit}}
+if (!$verbose) {if (!(Test-Path .\FolderCompare.ps1)) {Write-Output "FolderCompare.ps1 fehlt";exit}}
 
 $SourceFolder = $MagentaFolderLocal + "\Sicherung"
 
