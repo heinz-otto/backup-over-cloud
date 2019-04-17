@@ -22,7 +22,7 @@ param(
 #endregion 
 Set-Location $PSScriptRoot
 $verbose = $PSCmdlet.MyInvocation.BoundParameters["Verbose"] 
-if (!$verbose) {if (!(Test-Path .\fhemcl.ps1)) {Write-Output "fhemcl.ps1 fehlt"};exit}
+if (!$verbose) {if (!(Test-Path .\fhemcl.ps1)) {Write-Output "fhemcl.ps1 fehlt";exit}}
 Write-Verbose "$sourcepath $destination"
 
 $FileHash = "LeftSideHash$(get-date -format "yyyyMMdd-HHmmss").txt"
