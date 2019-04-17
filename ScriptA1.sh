@@ -1,11 +1,11 @@
 #!/bin/bash
 # this script sync the cloud content to the archive server
 # Read the foldernames from Arguments
+# logging will be done in the actual path 
 qpath=$1
 dpath=$2
-#LOG=$0.log
-LOG=/opt/fhem/Script.log
-# check if fhemcl exists
+LOG=$0.log
+# check if fhemcl exists in the actual path
 file=fhemcl.sh
 {
 if [ ! -e $file ]
@@ -20,7 +20,7 @@ mount "$dpath"
 # S* will copy all files and folders with S, folders will be created in $dpath if not exist
 # set Status in FHEM
 # use more rsync lines for different folders 
-if ! rsync -a --delete "${qpath}/S*" "${dpath}"
+if rsync -a --delete "${qpath}/S*" "${dpath}"
 then
    bash fhemcl.sh 8083 "set Sicherung SyncEnde"
 else
