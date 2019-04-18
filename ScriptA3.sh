@@ -4,7 +4,8 @@
 # read foldernames from Arguments
 qpath=$1
 dpath=$2
-LOG=$0.log
+LOG=Script.log
+if [ -d "log" ];then LOG="log/$LOG";fi
 # sync, umount and trigger
 {
 mount "$qpath"
