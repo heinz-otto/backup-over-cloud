@@ -4,10 +4,12 @@
 # logging will be done in the actual path 
 qpath=$1
 dpath=$2
-LOG=$0.log
-# check if fhemcl exists in the actual path
+#LOG=$0.log
+LOG=Script.log
+# check if fhemcl exists
 file=fhemcl.sh
 {
+Date
 if [ ! -e $file ]
 then
     echo "$file is missing"
