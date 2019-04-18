@@ -4,10 +4,13 @@
 # read Foldernames from Arguments
 qpath=$1
 dpath=$2
-LOG=$0.log
+#LOG=$0.log
+LOG=Script.log
+if [ -d "log" ];then LOG="log/$LOG";fi
 # check if fhemcl exists
 file=fhemcl.sh
 {
+Date
 if [ ! -e $file ]
 then
     echo "$file is missing"
