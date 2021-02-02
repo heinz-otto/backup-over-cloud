@@ -14,3 +14,8 @@ On the Windows Server, Powershell Script FolderSyncAblauf.ps1 is startet. This w
 On the Linux Box, if the trigger is received, the ScriptA1.sh ist startet. 
 On the Windows Server, the Script will continue after A1 is finished.
 On the Linux Box, if the Powershell finished trigger is received, the ScriptA3.sh ist startet.
+
+If you could'nt download the scripts by wget inside Windows powershell - try first:
+```
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+```
