@@ -1,4 +1,4 @@
-﻿function ScriptA1 {
+function ScriptA3 {
 #!/bin/bash
 # this script will sync the changes back to the cloud,
 # normally it will delete files wich are moved and deleted inside the powershell script
@@ -26,9 +26,9 @@ mount "$dpath"
 # use more rsync lines for different folders and set Status in FHEM
 if  rsync -a --delete ${qpath}/S* ${dpath}
 then
-   bash fhemcl.sh 8083 "set Sicherung beendet"
+   echo "set Sicherung beendet"|./fhemcl.sh 8083
 else
-   bash fhemcl.sh 8083 "set Sicherung ERROR_A3"
+   echo "set Sicherung ERROR_A3"|./fhemcl.sh 8083
 fi
 umount "$qpath"
 umount "$dpath"
